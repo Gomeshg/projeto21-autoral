@@ -1,0 +1,14 @@
+{
+  "name": "fasterbarber",
+  "version": "1.0.0",
+  "description": "Um sistema de otimização de barbearias",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hugo Gomes",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
