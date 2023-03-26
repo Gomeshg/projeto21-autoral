@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  password    String
+  numberPhone String   @unique
+  isBanished  Boolean  @default(false)
+  inLine      Boolean  @default(false)
+  session     Session?
+  cut         Cut[]
+
+  createdAt DateTime
+  updateAt  DateTime
+  Card      Card[]
+
+  @@map("user")
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime
+  updateAt  DateTime
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  @@map("session")
+}
+
+model Cut {
+  id    Int     @id @default(autoincrement())
+  type  TypeCut
+  value Decimal
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int  @unique
+
+  createdAt DateTime
+
+  @@map("cut")
+}
+
+model Card {
+  id        Int      @id @default(autoincrement())
+  number    String
+  cvv       String
+  dateValid DateTime
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime
+  updatedAt DateTime
+
+  @@map("card")
+}
+
+enum TypeCut {
+  MAQUINA
+  TESOURA
+  MAQUINA_E_TESOURA
+  NAVALHA
+}
