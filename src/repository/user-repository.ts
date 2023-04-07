@@ -1,4 +1,4 @@
-import prisma from "../database/prisma";
+import prisma from "../database/prisma.js";
 import { NewUser, NewSession } from "../protocols/contracts";
 import { User, Session } from "@prisma/client";
 
@@ -37,7 +37,7 @@ async function newSession(
   });
 }
 
-async function findSession(userId: number) {
+async function findSession(userId: number): Promise<Session> {
   return await prisma.session.findFirst({
     where: {
       userId,

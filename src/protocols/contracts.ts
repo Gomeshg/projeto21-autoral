@@ -10,4 +10,15 @@ export type NewUser = Omit<
   "id" | "isBanished" | "inLine" | "createdAt" | "updatedAt"
 >;
 
+export type Login = Omit<
+  User,
+  | "id"
+  | "name"
+  | "numberPhone"
+  | "isBanished"
+  | "inLine"
+  | "createdAt"
+  | "updatedAt"
+>;
+
 export type NewSession = Omit<Session, "id" | "createdAt" | "updatedAt">;

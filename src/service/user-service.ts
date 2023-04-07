@@ -1,11 +1,11 @@
 import { NewUser, NewSession } from "../protocols/contracts";
 import { User, Session } from "@prisma/client";
-import userRepository from "../repository/user-repository";
+import userRepository from "../repository/user-repository.js";
 import {
   conflictError,
   notFoundError,
   unauthorizedError,
-} from "../errors/errors";
+} from "../errors/errors.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const fourHours = 14400000;
@@ -37,12 +37,15 @@ async function newUser({
 }
 
 async function newSession(email: string, password: string): Promise<Session> {
+  console.log("Nova sessão");
   const user = await userRepository.findByEmail(email);
   if (!user) {
+    console.log("Não autorizado 1 ");
     throw unauthorizedError();
   }
 
   if (!bcrypt.compareSync(password, user.password)) {
+    console.log("Não autorizado 2 ");
     throw unauthorizedError();
   }
 
