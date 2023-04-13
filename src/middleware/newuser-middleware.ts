@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "../protocols/joi.js";
-import { NewUser } from "../protocols/contracts.js";
+import { User } from "../protocols/contracts.js";
 import httpStatus from "http-status";
 
 export default async function validateUser(
@@ -8,7 +8,7 @@ export default async function validateUser(
   res: Response,
   next: NextFunction
 ) {
-  const newUser = req.body as NewUser;
+  const newUser = req.body as User;
 
   const { error } = Joi.userSchema.validate(newUser, { abortEarly: false });
   if (error) {

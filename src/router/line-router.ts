@@ -4,7 +4,7 @@ import {
   postLine,
   putLine,
   deleteLine,
-} from "../controller/line-controller";
+} from "../controller/line-controller.js";
 const lineRouter = Router();
 
 lineRouter.post("/line", postLine);

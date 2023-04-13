@@ -1,6 +1,6 @@
 import httpstatus from "http-status";
 import { Request, Response } from "express";
-import { Line } from "../protocols/contracts";
+import { Line } from "../protocols/contracts.js";
 
 export async function getLine() {}
 

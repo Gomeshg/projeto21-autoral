@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import httpStatus from "http-status";
-import prisma from "../database/prisma";
 import jwt from "jsonwebtoken";
 import userRepository from "../repository/user-repository";
 import dotenv from "dotenv";
