@@ -1,10 +1,10 @@
 import httpstatus from "http-status";
 import { Request, Response } from "express";
 import userService from "../service/user-service.js";
-import { Login, NewUser } from "../protocols/contracts.js";
+import { Login, User } from "../protocols/contracts.js";
 
 export async function newUser(req: Request, res: Response): Promise<Response> {
-  const { name, password, email, numberPhone } = req.body as NewUser;
+  const { name, password, email, numberPhone } = req.body as User;
 
   try {
     const newUser = await userService.newUser({
@@ -30,10 +30,10 @@ export async function newSession(
   req: Request,
   res: Response
 ): Promise<Response> {
-  const { email, password } = req.body as Login;
+  const login = req.body as Login;
 
   try {
-    const newSession = await userService.newSession(email, password);
+    const newSession = await userService.newSession(login);
     return res.status(httpstatus.OK).send({ token: newSession.token });
   } catch (err) {
     if (err.name === "UnauthorizedError") {

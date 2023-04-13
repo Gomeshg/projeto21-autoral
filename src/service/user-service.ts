@@ -1,11 +1,6 @@
-import { NewUser, NewSession } from "../protocols/contracts";
-import { User, Session } from "@prisma/client";
+import { User, Session, Login } from "../protocols/contracts";
 import userRepository from "../repository/user-repository.js";
-import {
-  conflictError,
-  notFoundError,
-  unauthorizedError,
-} from "../errors/errors.js";
+import { conflictError, unauthorizedError } from "../errors/errors.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const fourHours = 14400000;
@@ -15,7 +10,7 @@ async function newUser({
   email,
   password,
   numberPhone,
-}: NewUser): Promise<User> {
+}: User): Promise<User> {
   const userAlreadyExists = await userRepository.findByEmail(email);
   if (userAlreadyExists) {
     throw conflictError("This user already exists!");
@@ -36,7 +31,7 @@ async function newUser({
   return user;
 }
 
-async function newSession(email: string, password: string): Promise<Session> {
+async function newSession({ email, password }: Login): Promise<Session> {
   const user = await userRepository.findByEmail(email);
   if (!user) {
     throw unauthorizedError();

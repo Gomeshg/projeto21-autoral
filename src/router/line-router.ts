@@ -1,10 +1,15 @@
 import { Router } from "express";
-
+import {
+  getLine,
+  postLine,
+  putLine,
+  deleteLine,
+} from "../controller/line-controller";
 const lineRouter = Router();
 
-lineRouter.post("/line");
-lineRouter.get("/line/:date");
-lineRouter.put("/line/:id");
-lineRouter.delete("/line/:id");
+lineRouter.post("/line", postLine);
+lineRouter.get("/line/:date", getLine);
+lineRouter.put("/line/:id", putLine);
+lineRouter.delete("/line/:id", deleteLine);
 
 export default lineRouter;
