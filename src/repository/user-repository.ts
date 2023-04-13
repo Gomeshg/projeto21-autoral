@@ -37,10 +37,18 @@ async function newSession(
   });
 }
 
-async function findSession(userId: number): Promise<Session> {
-  return await prisma.session.findFirst({
+async function findSessionByUserId(userId: number): Promise<Session> {
+  return await prisma.session.findUnique({
     where: {
       userId,
+    },
+  });
+}
+
+async function findSessionByToken(token: string): Promise<Session> {
+  return await prisma.session.findUnique({
+    where: {
+      token,
     },
   });
 }
@@ -50,7 +58,8 @@ const userRepository = {
   findByNumber,
   newUser,
   newSession,
-  findSession,
+  findSessionByUserId,
+  findSessionByToken,
 };
 
 export default userRepository;

@@ -37,15 +37,12 @@ async function newUser({
 }
 
 async function newSession(email: string, password: string): Promise<Session> {
-  console.log("Nova sessão");
   const user = await userRepository.findByEmail(email);
   if (!user) {
-    console.log("Não autorizado 1 ");
     throw unauthorizedError();
   }
 
   if (!bcrypt.compareSync(password, user.password)) {
-    console.log("Não autorizado 2 ");
     throw unauthorizedError();
   }
 
@@ -53,7 +50,7 @@ async function newSession(email: string, password: string): Promise<Session> {
     expiresIn: fourHours,
   });
 
-  let session = await userRepository.findSession(user.id);
+  let session = await userRepository.findSessionByUserId(user.id);
   if (session) {
     session = await userRepository.newSession(
       { userId: user.id, token },

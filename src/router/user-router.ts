@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { newUser, newSession } from "../controller/user-controller.js";
-import validateLogin from "../middleware/validate-login.js";
-import validateUser from "../middleware/validate-newuser.js";
+import validateLogin from "../middleware/login-middleware.js";
+import validateUser from "../middleware/newuser-middleware.js";
 const userRouter = Router();
 
 userRouter.post("/sign-up", validateUser, newUser);
