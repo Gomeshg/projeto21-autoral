@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import httpStatus from "http-status";
+import status from "http-status";
 import jwt from "jsonwebtoken";
-import userRepository from "../repository/user-repository";
+import userRepository from "../repository/user-repository.js";
 import dotenv from "dotenv";
 dotenv.config();
 
-export default async function auth(
-  req: Request,
+export default async function authenticateToken(
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ) {
@@ -14,7 +14,7 @@ export default async function auth(
   const token = authorization?.split(" ")[1];
 
   if (!token) {
-    return res.sendStatus(httpStatus.BAD_REQUEST);
+    return res.sendStatus(status.UNAUTHORIZED);
   }
 
   try {
@@ -22,16 +22,22 @@ export default async function auth(
     if (thereIsToken) {
       const isValidToken = jwt.verify(token, process.env.JWT_KEY);
       if (isValidToken) {
-        res.locals.userId = thereIsToken.userId;
+        req.userId = thereIsToken.userId;
         next();
       }
     } else {
-      return res.sendStatus(httpStatus.UNAUTHORIZED);
+      return res.sendStatus(status.UNAUTHORIZED);
     }
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      return res.sendStatus(httpStatus.UNAUTHORIZED);
+      return res.sendStatus(status.UNAUTHORIZED);
     }
-    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+    return res.sendStatus(status.INTERNAL_SERVER_ERROR);
   }
 }
+
+export type AuthenticatedRequest = Request & JWTPayload;
+
+type JWTPayload = {
+  userId: number;
+};

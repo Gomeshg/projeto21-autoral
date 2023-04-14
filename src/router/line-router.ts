@@ -5,11 +5,13 @@ import {
   putLine,
   deleteLine,
 } from "../controller/line-controller.js";
+import authenticateToken from "../middleware/auth-middleware.js";
+import validateID from "../middleware/id-middleware.js";
 const lineRouter = Router();
 
-lineRouter.post("/line", postLine);
-lineRouter.get("/line/:date", getLine);
-lineRouter.put("/line/:id", putLine);
-lineRouter.delete("/line/:id", deleteLine);
+lineRouter.post("/line", authenticateToken, postLine);
+lineRouter.get("/line/:date", authenticateToken, getLine);
+lineRouter.put("/line/:id", authenticateToken, validateID, putLine);
+lineRouter.delete("/line/:id", authenticateToken, validateID, deleteLine);
 
 export default lineRouter;
