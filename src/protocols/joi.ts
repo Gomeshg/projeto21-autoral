@@ -15,9 +15,20 @@ const loginSchema = joi.object({
   password: joi.string().min(4).required(),
 });
 
+const lineSchema = joi.object({
+  type: joi
+    .string()
+    .valid("MAQUINA", "MAQUINA_E_TESOURA", "TESOURA", "NAVALHA")
+    .required(),
+  date: joi.date().required(),
+  initTime: joi.date().required(),
+  avgDuration: joi.number().required(),
+});
+
 const Joi = {
   userSchema,
   loginSchema,
+  lineSchema,
 };
 
 export default Joi;

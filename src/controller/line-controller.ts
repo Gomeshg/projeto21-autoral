@@ -5,7 +5,7 @@ import { Line } from "../protocols/contracts.js";
 
 export async function getLine(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-  const { date } = req.params;
+  const { date } = res.locals;
   try {
     // const line = await lineService.getTodayLine(userId, date);
     // return res.status(httpstatus.OK).send(line);
@@ -25,12 +25,15 @@ export async function postLine(req: AuthenticatedRequest, res: Response) {
 
 export async function putLine(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
+  const { id } = res.locals;
   try {
   } catch (error) {}
 }
 
 export async function deleteLine(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
+  const { id } = res.locals;
+
   try {
   } catch (error) {}
 }

@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import status from "http-status";
-import { number } from "joi";
+import dayjs from "dayjs";
 
-export default function validateID(
+export default function validateDate(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const id = Number(req.params.id);
-  if (!id) {
+  const date = dayjs(req.params.date);
+  if (!date.isValid()) {
     return res.sendStatus(status.BAD_REQUEST);
   }
 
-  res.locals.id = id;
+  res.locals.date = date;
   next();
 }
