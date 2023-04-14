@@ -1,8 +1,7 @@
 import status from "http-status";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { AuthenticatedRequest } from "../middleware/auth-middleware.js";
 import { Line } from "../protocols/contracts.js";
-import dayjs from "dayjs";
 
 export async function getLine(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;

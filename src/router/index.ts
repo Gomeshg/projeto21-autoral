@@ -6,5 +6,10 @@ const routers = Router();
 
 routers.use(userRouter);
 routers.use(lineRouter);
+routers.post("/teste", (req, res) => {
+  const body = req.body;
+
+  return res.status(200).send(body);
+});
 
 export default routers;

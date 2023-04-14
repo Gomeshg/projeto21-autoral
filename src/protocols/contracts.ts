@@ -35,10 +35,17 @@ export type Line = {
   value: number;
   date: Date;
   initTime: Date;
-  endtime: Date;
+  endTime: Date;
   userId: number;
   createdAt?: Date;
   updatedAt?: Date;
+};
+
+export type UpdatedLine = {
+  type?: TypeCut;
+  date?: Date;
+  initTime?: Date;
+  avgDuration?: number;
 };
 
 export type Cut = {
