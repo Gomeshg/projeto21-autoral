@@ -6,12 +6,36 @@ import {
   deleteLine,
 } from "../controller/line-controller.js";
 import authenticateToken from "../middleware/auth-middleware.js";
-import validateID from "../middleware/id-middleware.js";
+import {
+  validateBody,
+  validateParams,
+} from "../middleware/validation-middleware.js";
+import Joi from "../protocols/joi.js";
 const lineRouter = Router();
 
-lineRouter.post("/line", authenticateToken, postLine);
-lineRouter.get("/line/:date", authenticateToken, getLine);
-lineRouter.put("/line/:id", authenticateToken, validateID, putLine);
-lineRouter.delete("/line/:id", authenticateToken, validateID, deleteLine);
+lineRouter.post(
+  "/line",
+  authenticateToken,
+  validateBody(Joi.lineSchema),
+  postLine
+);
+lineRouter.get(
+  "/line/:date",
+  authenticateToken,
+  validateParams(Joi.dateSchema),
+  getLine
+);
+lineRouter.put(
+  "/line/:id",
+  authenticateToken,
+  validateParams(Joi.idSchema),
+  putLine
+);
+lineRouter.delete(
+  "/line/:id",
+  authenticateToken,
+  validateParams(Joi.idSchema),
+  deleteLine
+);
 
 export default lineRouter;

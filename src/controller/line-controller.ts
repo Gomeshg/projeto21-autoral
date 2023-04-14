@@ -1,38 +1,42 @@
-import httpStatus from "http-status";
+import status from "http-status";
 import { Request, Response } from "express";
 import { AuthenticatedRequest } from "../middleware/auth-middleware.js";
 import { Line } from "../protocols/contracts.js";
+import dayjs from "dayjs";
 
 export async function getLine(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-  const { date } = res.locals;
+  const { date } = req.params;
+
   try {
     // const line = await lineService.getTodayLine(userId, date);
-    // return res.status(httpstatus.OK).send(line);
+    // return res.status(status.OK).send(line);
   } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      return res.sendStatus(httpStatus.UNAUTHORIZED);
+    if (error.name === "BadRequestError") {
+      return res.sendStatus(status.BAD_REQUEST);
     }
-    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+    return res.sendStatus(status.INTERNAL_SERVER_ERROR);
   }
 }
 
 export async function postLine(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
+
+  return res.status(status.OK).send("Foi!");
   try {
   } catch (error) {}
 }
 
 export async function putLine(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-  const { id } = res.locals;
+  const { id } = req.params;
   try {
   } catch (error) {}
 }
 
 export async function deleteLine(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
-  const { id } = res.locals;
+  const { id } = req.params;
 
   try {
   } catch (error) {}
