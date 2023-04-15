@@ -7,7 +7,7 @@ const idSchema = joi.object({
 const dateSchema = joi.object({
   date: joi
     .string()
-    .pattern(/[0-9]{2}-[0-9]{2}-[0-9]{4}/)
+    .pattern(/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/)
     .required(),
 });
 
@@ -31,9 +31,18 @@ const lineSchema = joi.object({
     .string()
     .valid("MAQUINA", "MAQUINA_E_TESOURA", "TESOURA", "NAVALHA")
     .required(),
-  date: joi.string().pattern(/([0-9]{2})?[9]{1}[0-9]{4}[0-9]{4}/),
-  initTime: joi.string().pattern(/[0-9]{2}:[0-9]{2}/),
-  avgDuration: joi.number().required(),
+  date: joi
+    .string()
+    .pattern(/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/)
+    .required(),
+  initTime: joi
+    .string()
+    .pattern(/^[0-9]{2}:[0-9]{2}$/)
+    .required(),
+  avgDuration: joi
+    .string()
+    .pattern(/^(30|60)$/)
+    .required(),
 });
 
 const Joi = {

@@ -29,6 +29,7 @@ lineRouter.put(
   "/line/:id",
   authenticateToken,
   validateParams(Joi.idSchema),
+  validateBody(Joi.lineSchema),
   putLine
 );
 lineRouter.delete(

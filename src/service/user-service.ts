@@ -4,6 +4,7 @@ import { conflictError, unauthorizedError } from "../errors/errors.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const fourHours = 14400000;
+const numHash = 12;
 
 async function newUser({
   name,
@@ -24,7 +25,7 @@ async function newUser({
   const newUser = {
     name,
     email,
-    password: await bcrypt.hash(password, 12),
+    password: await bcrypt.hash(password, numHash),
     numberPhone,
   };
   const user = await userRepository.newUser(newUser);

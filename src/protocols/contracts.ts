@@ -1,4 +1,4 @@
-import { TypeCut } from "@prisma/client";
+import { Prisma, TypeCut } from "@prisma/client";
 
 export type ApplicationError = {
   name: string;
@@ -32,7 +32,7 @@ export type Session = {
 export type Line = {
   id?: number;
   type: TypeCut;
-  value: number;
+  value: Prisma.Decimal;
   date: Date;
   initTime: Date;
   endTime: Date;
@@ -41,27 +41,27 @@ export type Line = {
   updatedAt?: Date;
 };
 
-export type UpdatedLine = {
-  type?: TypeCut;
-  date?: Date;
-  initTime?: Date;
-  avgDuration?: number;
+export type NewLine = {
+  type: TypeCut;
+  date: string;
+  initTime: string;
+  avgDuration: string;
 };
 
-export type Cut = {
-  id?: number;
-  type: TypeCut;
-  value: number;
-  userId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-};
-export type Card = {
-  id?: number;
-  number: number;
-  cvv: string;
-  dateValid: Date;
-  userId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-};
+// export type Cut = {
+//   id?: number;
+//   type: TypeCut;
+//   value: number;
+//   userId: number;
+//   createdAt?: Date;
+//   updatedAt?: Date;
+// };
+// export type Card = {
+//   id?: number;
+//   number: number;
+//   cvv: string;
+//   dateValid: Date;
+//   userId: number;
+//   createdAt?: Date;
+//   updatedAt?: Date;
+// };

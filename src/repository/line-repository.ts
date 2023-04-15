@@ -1,39 +1,62 @@
 import prisma from "../database/prisma.js";
-import { Line, UpdatedLine } from "../protocols/contracts.js";
+import { Line } from "../protocols/contracts.js";
 
-async function findLineByDate(date: Date) {
-  await prisma.line.findFirst({
+async function findLineByDate(date: Date): Promise<Line[]> {
+  return await prisma.line.findMany({
     where: {
       date,
     },
   });
 }
 
+async function findLineByUserId(userId: number): Promise<Line> {
+  return await prisma.line.findUnique({
+    where: {
+      userId,
+    },
+  });
+}
+
+async function findLineByLineId(id: number): Promise<Line> {
+  return await prisma.line.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
+async function findAllLines(): Promise<Line[]> {
+  return await prisma.line.findMany({});
+}
+
 async function createLine(line: Line) {
-  await prisma.line.create({
+  return await prisma.line.create({
     data: line,
   });
 }
 
-async function updateLine(lineId: number, updatedLine: UpdatedLine) {
-  await prisma.line.update({
+async function updateLine(id: number, updatedLine: Line) {
+  return await prisma.line.update({
     where: {
-      id: lineId,
+      id,
     },
     data: updatedLine,
   });
 }
 
-async function deleteLine(lineId: number) {
-  await prisma.line.delete({
+async function deleteLine(id: number) {
+  return await prisma.line.delete({
     where: {
-      id: lineId,
+      id,
     },
   });
 }
 
 const lineRepository = {
   findLineByDate,
+  findLineByUserId,
+  findLineByLineId,
+  findAllLines,
   createLine,
   updateLine,
   deleteLine,
