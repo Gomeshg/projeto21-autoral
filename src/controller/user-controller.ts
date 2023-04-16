@@ -34,7 +34,9 @@ export async function newSession(
 
   try {
     const newSession = await userService.newSession(login);
-    return res.status(httpstatus.OK).send({ token: newSession.token });
+    return res
+      .status(httpstatus.OK)
+      .send({ token: newSession.token, userId: newSession.userId });
   } catch (err) {
     if (err.name === "UnauthorizedError") {
       return res.status(httpstatus.UNAUTHORIZED).send(err.message);
