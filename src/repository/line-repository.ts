@@ -7,7 +7,12 @@ async function findLineByDate(date: Date): Promise<Line[]> {
       date,
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          name: true,
+          isBanished: true,
+        },
+      },
     },
   });
 }
