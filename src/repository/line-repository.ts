@@ -6,6 +6,9 @@ async function findLineByDate(date: Date): Promise<Line[]> {
     where: {
       date,
     },
+    include: {
+      user: true,
+    },
   });
 }
 
