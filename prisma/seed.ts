@@ -1,8 +1,8 @@
-import { createManyUsers, loginManyUsers } from "./factories/user-factory";
-import { createLine } from "./factories/line-factory";
-import prisma from "../src/database/prisma";
-import { User, Session } from "../src/protocols/contracts";
-import { Line, NewLine } from "../src/protocols/contracts";
+import { createManyUsers } from "./factories/user-factory.js";
+import { createManyLines } from "./factories/line-factory.js";
+import prisma from "../src/database/prisma.js";
+import { User, Session } from "../src/protocols/contracts.js";
+import { Line, NewLine } from "../src/protocols/contracts.js";
 
 export async function seed() {
   await prisma.line.deleteMany({});
@@ -10,7 +10,7 @@ export async function seed() {
   await prisma.user.deleteMany({});
 
   const users: User[] = await createManyUsers();
-  const sessions: Session[] = await loginManyUsers(users);
+  const lines: Line[] = await createManyLines(users);
 }
 
 seed()
