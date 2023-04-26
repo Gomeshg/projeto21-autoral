@@ -1,5 +1,5 @@
 import prisma from "../database/prisma.js";
-import { Line } from "../protocols/contracts.js";
+import { Line, User } from "../protocols/contracts.js";
 
 async function findLineByDate(date: Date): Promise<Line[]> {
   return await prisma.line.findMany({
@@ -29,6 +29,22 @@ async function findLineByLineId(id: number): Promise<Line> {
   return await prisma.line.findUnique({
     where: {
       id,
+    },
+  });
+}
+
+// async function findLineByTime(initTime: Date, endTime: Date): Promise<Line> {
+//   return await prisma.line.findFirst({
+//     where: {
+//       OR: [{ initTime }, { endTime }],
+//     },
+//   });
+// }
+
+async function findLineByTime(initTime: Date): Promise<Line> {
+  return await prisma.line.findFirst({
+    where: {
+      AND: [{ initTime: { gte: initTime } }, { endTime: { lte: initTime } }],
     },
   });
 }
@@ -64,6 +80,7 @@ const lineRepository = {
   findLineByDate,
   findLineByUserId,
   findLineByLineId,
+  findLineByTime,
   findAllLines,
   createLine,
   updateLine,

@@ -4,14 +4,30 @@ import { AuthenticatedRequest } from "../middleware/auth-middleware.js";
 import { NewLine } from "../protocols/contracts.js";
 import lineService from "../service/line-service.js";
 
-export async function getLine(req: AuthenticatedRequest, res: Response) {
-  const { userId } = req;
+export async function getLines(req: AuthenticatedRequest, res: Response) {
   const { date } = req.params;
 
   try {
     const line = await lineService.getLine(date);
     return res.status(status.OK).send(line);
   } catch (error) {
+    return res.sendStatus(status.INTERNAL_SERVER_ERROR);
+  }
+}
+
+export async function getOneLine(req: AuthenticatedRequest, res: Response) {
+  const { userId } = req;
+
+  try {
+    const line = await lineService.getOneLine(userId);
+    return res.status(status.OK).send(line);
+  } catch (error) {
+    if (error.name === "NotFoundError") {
+      return res.sendStatus(status.NOT_FOUND);
+    }
+    if (error.name === "UnauthorizedError") {
+      return res.sendStatus(status.UNAUTHORIZED);
+    }
     return res.sendStatus(status.INTERNAL_SERVER_ERROR);
   }
 }

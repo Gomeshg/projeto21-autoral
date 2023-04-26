@@ -20,20 +20,40 @@ async function getLine(stringDate: string): Promise<Line[]> {
   return line;
 }
 
+async function getOneLine(userId: number): Promise<Line> {
+  const line = await lineRepository.findLineByUserId(userId);
+
+  if (!line) {
+    throw notFoundError();
+  }
+
+  if (line.userId !== userId) {
+    throw unauthorizedError();
+  }
+
+  return line;
+}
+
 async function postLine(userId: number, newLine: NewLine): Promise<void> {
   const initTime = convert_string_time_in_date(newLine.initTime, newLine.date);
+  const endTime = create_end_time(initTime, newLine.avgDuration);
   const line: Line = {
     type: newLine.type,
     value: prices[newLine.type],
     date: convert_string_date_in_date(newLine.date),
     initTime: initTime,
-    endTime: create_end_time(initTime, newLine.avgDuration),
+    endTime: endTime,
     userId: userId,
   };
 
   const lineAlreadyExists = await lineRepository.findLineByUserId(userId);
   if (lineAlreadyExists) {
     throw conflictError("Line Already Exists");
+  }
+
+  const timeAlreadyChosen = await lineRepository.findLineByTime(initTime);
+  if (timeAlreadyChosen) {
+    throw conflictError("Time already chosen");
   }
 
   await lineRepository.createLine(line);
@@ -86,6 +106,7 @@ async function deleteLine(userId: number, lineId: number): Promise<void> {
 
 const lineService = {
   getLine,
+  getOneLine,
   postLine,
   putLine,
   deleteLine,

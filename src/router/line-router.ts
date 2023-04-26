@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
-  getLine,
+  getLines,
+  getOneLine,
   postLine,
   putLine,
   deleteLine,
@@ -23,8 +24,9 @@ lineRouter.get(
   "/line/:date",
   authenticateToken,
   validateParams(Joi.dateSchema),
-  getLine
+  getLines
 );
+lineRouter.get("/line", authenticateToken, getOneLine);
 lineRouter.put(
   "/line/:id",
   authenticateToken,
