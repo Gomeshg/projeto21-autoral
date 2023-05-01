@@ -2,6 +2,7 @@ import httpstatus from "http-status";
 import { Request, Response } from "express";
 import userService from "../service/user-service.js";
 import { Login, User } from "../protocols/contracts.js";
+import { invalid } from "joi";
 
 export async function newUser(req: Request, res: Response): Promise<Response> {
   const { name, password, email, numberPhone } = req.body as User;
@@ -16,9 +17,7 @@ export async function newUser(req: Request, res: Response): Promise<Response> {
     return res.status(httpstatus.CREATED).send(newUser);
   } catch (err) {
     if (err.name === "ConflictError") {
-      return res
-        .status(httpstatus.CONFLICT)
-        .send("User with this email or numberPhone already exists");
+      return res.status(httpstatus.CONFLICT).send("User already exist");
     }
     return res
       .status(httpstatus.INTERNAL_SERVER_ERROR)
@@ -39,7 +38,9 @@ export async function newSession(
       .send({ token: newSession.token, userId: newSession.userId });
   } catch (err) {
     if (err.name === "UnauthorizedError") {
-      return res.status(httpstatus.UNAUTHORIZED).send(err.message);
+      return res
+        .status(httpstatus.UNAUTHORIZED)
+        .send({ errorMessage: "Invalid login" });
     }
     return res
       .status(httpstatus.INTERNAL_SERVER_ERROR)

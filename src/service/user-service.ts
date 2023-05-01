@@ -14,12 +14,12 @@ async function newUser({
 }: User): Promise<User> {
   const userAlreadyExists = await userRepository.findByEmail(email);
   if (userAlreadyExists) {
-    throw conflictError("This user already exists!");
+    throw conflictError("User already exist!");
   }
 
   const numberAlreadyExists = await userRepository.findByNumber(numberPhone);
   if (numberAlreadyExists) {
-    throw conflictError("This number already exists!");
+    throw conflictError("User already exist!");
   }
 
   const newUser = {

@@ -39,9 +39,22 @@ export async function postLine(req: AuthenticatedRequest, res: Response) {
     await lineService.postLine(userId, body);
     return res.sendStatus(status.CREATED);
   } catch (error) {
-    if (error.name === "ConflictError") {
-      return res.sendStatus(status.CONFLICT);
+    if (error.message === "Line Already Exists") {
+      return res
+        .status(status.CONFLICT)
+        .send({ errorMessage: "Line Already Exists" });
     }
+
+    if (error.message === "Time already chosen") {
+      return res
+        .status(status.CONFLICT)
+        .send({ errorMessage: "Time already chosen" });
+    }
+
+    if (error.message === "Time out") {
+      return res.status(status.CONFLICT).send({ errorMessage: "Time out" });
+    }
+
     return res.sendStatus(status.INTERNAL_SERVER_ERROR);
   }
 }
@@ -61,6 +74,22 @@ export async function putLine(req: AuthenticatedRequest, res: Response) {
     if (error.name === "UnauthorizedError") {
       return res.sendStatus(status.UNAUTHORIZED);
     }
+    if (error.message === "Line Already Exists") {
+      return res
+        .status(status.CONFLICT)
+        .send({ errorMessage: "Line Already Exists" });
+    }
+
+    if (error.message === "Time already chosen") {
+      return res
+        .status(status.CONFLICT)
+        .send({ errorMessage: "Time already chosen" });
+    }
+
+    if (error.message === "Time out") {
+      return res.status(status.CONFLICT).send({ errorMessage: "Time out" });
+    }
+
     return res.sendStatus(status.INTERNAL_SERVER_ERROR);
   }
 }
