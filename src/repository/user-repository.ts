@@ -1,6 +1,5 @@
 import prisma from "../database/prisma.js";
-import { NewUser, NewSession } from "../protocols/contracts";
-import { User, Session } from "@prisma/client";
+import { User, Session } from "../protocols/contracts";
 
 async function findByEmail(email: string): Promise<User> {
   return await prisma.user.findUnique({
@@ -18,14 +17,14 @@ async function findByNumber(numberPhone: string): Promise<User> {
   });
 }
 
-async function newUser(user: NewUser): Promise<User> {
+async function newUser(user: User): Promise<User> {
   return await prisma.user.create({
     data: user,
   });
 }
 
 async function newSession(
-  session: NewSession,
+  session: Session,
   sessionId?: number
 ): Promise<Session> {
   return await prisma.session.upsert({

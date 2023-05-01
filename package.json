@@ -8,7 +8,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "node dist/main.js",
-    "dev": "nodemon src/main.ts"
+    "dev": "nodemon src/main.ts",
+    "dev:seed": "npx prisma db seed"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "author": "Hugo Gomes",
   "license": "ISC",
@@ -16,6 +20,8 @@
     "@prisma/client": "^4.11.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.7",
+    "decimal.js": "^10.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "http-status": "^1.6.2",
