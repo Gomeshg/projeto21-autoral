@@ -7,6 +7,7 @@ import {
   create_end_time,
   prices,
 } from "../../src/utils/utils.js";
+import { date } from "joi";
 
 export async function createLine(userId: number, newLine: NewLine) {
   const initTime = convert_string_time_in_date(newLine.initTime, newLine.date);
@@ -26,11 +27,14 @@ export async function createLine(userId: number, newLine: NewLine) {
 }
 
 export async function createManyLines(users: User[]): Promise<Line[]> {
+  const dateNow = new Date();
   const lines: Line[] = [];
   for (let i = 0; i < users.length; i++) {
     const newLine: NewLine = {
       type: getRandomType(),
-      date: "26-04-2023",
+      date: `${dateNow.getDate()}-${
+        dateNow.getMonth() + 1
+      }-${dateNow.getFullYear()}`,
       initTime: `${9 + i}:00`,
       avgDuration: "60",
     };

@@ -9,17 +9,28 @@ export async function createUser(newUser: User): Promise<User> {
 }
 
 export async function createManyUsers(): Promise<User[]> {
+  const names: string[] = [
+    "Heraldo",
+    "Alexandre",
+    "Hugo",
+    "Higor",
+    "Lucas",
+    "Gabriel",
+    "Vinicius",
+    "Victor",
+    "Davi",
+  ];
   const users: User[] = [];
-  for (let i = 1; i <= 9; i++) {
+  for (let i = 1, j = 0; i <= 9; i++, j++) {
     const user = await createUser({
-      name: `User${i}`,
-      email: `user${i}@gmail.com`,
+      name: names[j],
+      email: `${names[j]}@gmail.com`,
       password: await bcrypt.hash("1234", hash),
       numberPhone: `2193332401${i}`,
     });
+
     users.push(user);
   }
 
-  console.log(users);
   return users;
 }

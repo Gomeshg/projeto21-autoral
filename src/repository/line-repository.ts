@@ -33,18 +33,19 @@ async function findLineByLineId(id: number): Promise<Line> {
   });
 }
 
-// async function findLineByTime(initTime: Date, endTime: Date): Promise<Line> {
-//   return await prisma.line.findFirst({
-//     where: {
-//       OR: [{ initTime }, { endTime }],
-//     },
-//   });
-// }
-
-async function findLineByTime(initTime: Date): Promise<Line> {
-  return await prisma.line.findFirst({
+async function findLineByTime(initTime: Date, endTime: Date): Promise<Line[]> {
+  return await prisma.line.findMany({
     where: {
-      AND: [{ initTime: { gte: initTime } }, { endTime: { lte: initTime } }],
+      OR: [
+        {
+          initTime: { lte: initTime },
+          endTime: { gt: initTime },
+        },
+        {
+          initTime: { lt: endTime },
+          endTime: { gte: endTime },
+        },
+      ],
     },
   });
 }

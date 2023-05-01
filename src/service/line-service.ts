@@ -45,14 +45,20 @@ async function postLine(userId: number, newLine: NewLine): Promise<void> {
     endTime: endTime,
     userId: userId,
   };
-
   const lineAlreadyExists = await lineRepository.findLineByUserId(userId);
   if (lineAlreadyExists) {
     throw conflictError("Line Already Exists");
   }
 
-  const timeAlreadyChosen = await lineRepository.findLineByTime(initTime);
-  if (timeAlreadyChosen) {
+  if (initTime.getHours() < 9 || initTime.getHours() > 18) {
+    throw conflictError("Time out");
+  }
+
+  const timeAlreadyChosen = await lineRepository.findLineByTime(
+    initTime,
+    endTime
+  );
+  if (timeAlreadyChosen.length !== 0) {
     throw conflictError("Time already chosen");
   }
 
@@ -78,14 +84,27 @@ async function putLine(
     newUpdatedLine.initTime,
     newUpdatedLine.date
   );
+  const endTime = create_end_time(initTime, newUpdatedLine.avgDuration);
   const updatedLine: Line = {
     type: newUpdatedLine.type,
     value: prices[newUpdatedLine.type],
     date: convert_string_date_in_date(newUpdatedLine.date),
     initTime: initTime,
-    endTime: create_end_time(initTime, newUpdatedLine.avgDuration),
+    endTime: endTime,
     userId: userId,
   };
+
+  if (initTime.getHours() < 9 || initTime.getHours() > 18) {
+    throw conflictError("Time out");
+  }
+
+  const timeAlreadyChosen = await lineRepository.findLineByTime(
+    initTime,
+    endTime
+  );
+  if (timeAlreadyChosen.length !== 0) {
+    throw conflictError("Time already chosen");
+  }
 
   await lineRepository.updateLine(lineId, updatedLine);
 }
