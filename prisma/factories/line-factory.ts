@@ -1,13 +1,8 @@
 import { TypeCut } from "@prisma/client";
 import prisma from "../../src/database/prisma.js";
 import { Line, NewLine, User } from "../../src/protocols/contracts.js";
-import {
-  convert_string_date_in_date,
-  convert_string_time_in_date,
-  create_end_time,
-  prices,
-} from "../../src/utils/utils.js";
-import { date } from "joi";
+import { convert_string_date_in_date, convert_string_time_in_date, create_end_time, prices } from "../../src/utils/utils.js";
+// import { date } from "joi";
 
 export async function createLine(userId: number, newLine: NewLine) {
   const initTime = convert_string_time_in_date(newLine.initTime, newLine.date);
@@ -32,9 +27,7 @@ export async function createManyLines(users: User[]): Promise<Line[]> {
   for (let i = 0; i < users.length; i++) {
     const newLine: NewLine = {
       type: getRandomType(),
-      date: `${dateNow.getDate()}-${
-        dateNow.getMonth() + 1
-      }-${dateNow.getFullYear()}`,
+      date: `${dateNow.getDate() + getRandomInt()}-${dateNow.getMonth() + 1}-${dateNow.getFullYear()}`,
       initTime: `${9 + i}:00`,
       avgDuration: "60",
     };
@@ -46,12 +39,11 @@ export async function createManyLines(users: User[]): Promise<Line[]> {
 }
 
 export function getRandomType(): TypeCut {
-  const types: TypeCut[] = [
-    "MAQUINA",
-    "TESOURA",
-    "MAQUINA_E_TESOURA",
-    "NAVALHA",
-  ];
+  const types: TypeCut[] = ["MAQUINA", "TESOURA", "MAQUINA_E_TESOURA", "NAVALHA"];
 
   return types[Math.floor(Math.random() * 4)];
+}
+
+export function getRandomInt(): number {
+  return Math.floor(Math.random() * 3);
 }
